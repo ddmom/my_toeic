@@ -2,8 +2,15 @@ import streamlit as st
 import pandas as pd
 import random
 
-# 1. 앱 설정
-st.set_page_config(page_title="토익 마스터", layout="centered")
+# ---------------------------------------------------------
+# [수정된 부분] 1. 앱 설정 (최적화된 아이콘 적용)
+# ---------------------------------------------------------
+# 'lighthouse-icon-small.png' 파일이 깃허브(같은 폴더)에 있어야 합니다.
+st.set_page_config(
+    page_title="토익 마스터",
+    page_icon="lighthouse-icon-small.png",  # <--- 변환된 파일명으로 연결했습니다!
+    layout="centered"
+)
 
 # CSS 스타일
 st.markdown("""
@@ -68,8 +75,7 @@ elif menu == "2. 헷갈리는 단어 VS 게임":
         # 데이터 로드
         df_vs = pd.read_excel("vs_quiz.xlsx")
         
-        # ★★★ 여기가 수정된 부분 (강제 이름표 붙이기) ★★★
-        # 엑셀 제목이 뭐라고 되어있든, 순서대로(1,2,3,4번째) 이름을 붙여버립니다.
+        # 엑셀 제목 강제 통일
         if len(df_vs.columns) >= 4:
             df_vs.columns = ['Question', 'Correct', 'Wrong', 'Explanation']
         else:
@@ -120,7 +126,7 @@ elif menu == "2. 헷갈리는 단어 VS 게임":
             else:
                 st.error(f"❌ 땡! 정답은 '{q['Correct']}' 입니다.")
             
-            # 해설 박스 (내용이 있을 때만 표시)
+            # 해설 박스
             if pd.notna(q['Explanation']):
                 st.markdown(f"<div class='explanation'>💡 <b>해설:</b> {q['Explanation']}</div>", unsafe_allow_html=True)
             st.write("")
@@ -138,5 +144,3 @@ elif menu == "2. 헷갈리는 단어 VS 게임":
 
     except Exception as e:
         st.error(f"오류: 엑셀 파일을 읽는 중 문제가 생겼습니다. ({e})")
-        # 디버깅을 위해 데이터프레임 구조를 보여줌 (문제 해결용)
-        # st.write(df_vs.head())
